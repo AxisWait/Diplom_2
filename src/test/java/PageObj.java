@@ -5,10 +5,9 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
-public class UserPageObj {
+public class PageObj {
     RequestSpecification requestSpec;
     private  final String ENDPOINT_USER_REGISTER = "/api/auth/register";
     private  final String ENDPOINT_USER_LOGIN = "api/auth/login";
@@ -42,6 +41,27 @@ public class UserPageObj {
                 .body(json)
                 .when()
                 .post(ENDPOINT_ORDERS);
+        return response;
+    }
+    @Step("Send GET request to /api/orders")
+    public Response sendGetRequestOrdersWithAuthorization(String accessToken){
+        Response response = given(requestSpec)
+                .log()
+                .all()
+                .header("Authorization", accessToken)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(ENDPOINT_ORDERS);
+        return response;
+    }
+    @Step("Send GET request to /api/orders")
+    public Response sendGetRequestOrders(){
+        Response response = given(requestSpec)
+                .log()
+                .all()
+                .header("Content-type", "application/json")
+                .when()
+                .get(ENDPOINT_ORDERS);
         return response;
     }
     @Step("Send POST request to /api/orders")
@@ -109,6 +129,16 @@ public class UserPageObj {
                 .body("success", equalTo(true))
                 .body("user.email", equalTo(email))
                 .body("user.name", equalTo(name));
+    }
+    @Step("Checking the response body")
+    public void compareResponseBodyGetOrders(Response response){
+        response
+                .then()
+                .assertThat()
+                .body("success", equalTo(true))
+                .body("orders", not(empty())) // Проверяем, что список заказов не пустой
+                .body("total", greaterThanOrEqualTo(0)) // Проверяем, что общее количество заказов неотрицательное
+                .body("totalToday", greaterThanOrEqualTo(0)); // Проверяем, что количество заказов за сегодня неотрицательное
     }
     @Step("Compare response to something")
     public void compareResponseToText(Response response, String key, String message){
