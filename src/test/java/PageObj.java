@@ -100,7 +100,7 @@ public class PageObj {
     }
 
     @Step("Create user")
-    public Response CreateUser(String email, String password, String name){
+    public Response createUser(String email, String password, String name){
         String json = "{\n" +
                 "    \"email\": \""+email+"\",\n" +
                 "    \"password\": \""+password+"\",\n" +
@@ -160,7 +160,7 @@ public class PageObj {
         System.out.println(response.body().asString());
     }
     @Step("User login using the data")
-    public Response LoginUser(String email, String password) {
+    public Response loginUser(String email, String password) {
         String loginRequestBody = "{ \"email\": \"" + email + "\", \"password\": \"" + password + "\" }";
         Response loginResponse = given(requestSpec)
                 .contentType(ContentType.JSON)
@@ -170,7 +170,7 @@ public class PageObj {
         return loginResponse;
     }
     @Step("User login using the JSON")
-    public Response LoginUser(String json) {
+    public Response loginUser(String json) {
         Response loginResponse = given(requestSpec)
                 .contentType(ContentType.JSON)
                 .body(json)
@@ -181,7 +181,7 @@ public class PageObj {
     @Step("Clearing the test data. deleting a user")
     public void deleteUser(String email, String password){
 
-        Response loginResponse = LoginUser(email,password);
+        Response loginResponse = loginUser(email,password);
 
         String accessToken = loginResponse.path("accessToken"); // Получаем accessToken из ответа
 
@@ -201,7 +201,7 @@ public class PageObj {
 
     @Step("Auth for Token")
     public String authorizationForToken(String json){
-        Response loginResponse = LoginUser(json);
+        Response loginResponse = loginUser(json);
         String accessToken = loginResponse.path("accessToken"); // Получаем accessToken из ответа
         return accessToken;
     }

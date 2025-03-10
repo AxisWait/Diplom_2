@@ -15,7 +15,7 @@ public class UserCreationTests extends PageObj {
     @DisplayName("Создание пользователя")
     @Test
     public void testCreateUserWithValidData(){
-        Response response = CreateUser(email,password,name);
+        Response response = createUser(email,password,name);
         printResponseBodyToConsole(response);
         compareStatusCode(response,200);
         compareResponseBodyRegistrationAndLogin(response,email,name);
@@ -25,10 +25,10 @@ public class UserCreationTests extends PageObj {
     @DisplayName("Создание уже существующего пользователя")
     @Test
     public void testCreateUserWithExistingLogin() {
-        Response response = CreateUser(email,password,name);
+        Response response = createUser(email,password,name);
         compareStatusCode(response,200);
         compareResponseBodyRegistrationAndLogin(response,email,name);
-        Response new_response = CreateUser(email,password,name);
+        Response new_response = createUser(email,password,name);
         compareResponseToText(new_response, "message", "User already exists");
         compareStatusCode(new_response,403);
         printResponseBodyToConsole(new_response);

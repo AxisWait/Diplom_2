@@ -1,5 +1,4 @@
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 @DisplayName("Тесты создания заказа")
@@ -9,7 +8,7 @@ public class OrderTests extends PageObj {
     private  String name = "Unique User";
     @Test
     public void testCreateOrderWithAuthAndIngredients() {
-        CreateUser(email,password,name);
+        createUser(email,password,name);
         String loginRequestBody = "{ \"email\": \""+email+"\", \"password\": \""+password+"\" }";
         String accessToken = authorizationForToken(loginRequestBody);
         String orderRequestBody = "{ \"ingredients\": [\"61c0c5a71d1f82001bdaaa70\", \"61c0c5a71d1f82001bdaaa72\"] }";

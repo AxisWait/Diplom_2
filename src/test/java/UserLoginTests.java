@@ -10,7 +10,7 @@ public class UserLoginTests extends PageObj {
     @DisplayName("Логин пользователя в системе")
     @Test
     public void testLoginUserrWithValidData(){
-        Response response = CreateUser(email,password,name);
+        Response response = createUser(email,password,name);
         printResponseBodyToConsole(response);
         compareStatusCode(response,200);
         compareResponseBodyRegistrationAndLogin(response,email,name);
@@ -20,10 +20,10 @@ public class UserLoginTests extends PageObj {
     @Test
     public void testLoginUserWithInvalidPass(){
         String emptypass = "";
-        Response response = CreateUser(email,password,name);
+        Response response = createUser(email,password,name);
         compareStatusCode(response,200);
         compareResponseBodyRegistrationAndLogin(response,email,name);
-        Response loginResponse = LoginUser(email,emptypass);
+        Response loginResponse = loginUser(email,emptypass);
         compareStatusCode(loginResponse, 401);
         compareResponseToText(loginResponse, "message","email or password are incorrect");
         printResponseBodyToConsole(response);
@@ -36,7 +36,7 @@ public class UserLoginTests extends PageObj {
                 "    \"email\": \"enakin89\",\n" +
                 "    \"password\": \"321\"\n" +
                 "}";
-        Response response = LoginUser(json);
+        Response response = loginUser(json);
         compareStatusCode(response, 401);
         compareResponseToText(response, "message","email or password are incorrect");
         printResponseBodyToConsole(response);

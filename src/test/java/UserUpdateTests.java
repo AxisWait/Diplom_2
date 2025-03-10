@@ -9,11 +9,11 @@ public class UserUpdateTests extends PageObj {
     private  String newEmail = "unique_user_1@example.com";
     @BeforeEach
     public  void createUser(){
-        CreateUser(email,password,name);
+        createUser(email,password,name);
     }
     @Test
     public void testSuccessfulUserUpdate() {
-        Response loginResponse = LoginUser(email,password);
+        Response loginResponse = loginUser(email,password);
         String accessToken = loginResponse.path("accessToken"); // Получаем accessToken из ответа
         String updateRequestBody = "{ \"email\": \""+newEmail+"\", \"name\": \"New Name\" }";
         Response response = sendPatchRequestUserWithAuthorization(updateRequestBody,accessToken);
